@@ -26,7 +26,7 @@ func GetToken(username string) (string, error) {
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
 			Issuer:    "admin",
-			Subject:   "k8s-platform",
+			Subject:   "token",
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

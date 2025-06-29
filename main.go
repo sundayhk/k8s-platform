@@ -36,9 +36,9 @@ func main() {
 
 	routers.RegisterRouters(r)
 
-	r.NoRoute(func(c *gin.Context) {
-		c.JSON(404, gin.H{"error": "未找到匹配的路由"})
-	})
+	// r.NoRoute(func(c *gin.Context) {
+	// 	c.JSON(404, gin.H{"error": "未找到匹配的路由"})
+	// })
 
 	// r.Run(config.Port)
 	r.Run("localhost:8080") // 避免windows防火墙弹窗

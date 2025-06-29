@@ -10,11 +10,11 @@ import (
 )
 
 func JwtAuth(r *gin.Context) {
-	requestUrl := r.FullPath()
+	requestUrl := r.Request.URL.Path
 	logs.Debug(map[string]interface{}{"请求路径": requestUrl}, "")
 	// 取消验证
 	if requestUrl == "/api/auth/login" || requestUrl == "/api/auth/logout" {
-		logs.Debug(map[string]interface{}{"请求路径": requestUrl}, "登陆和退出不验证token")
+		logs.Debug(map[string]interface{}{"requestUrl": requestUrl}, "登陆和退出接口不验证token")
 		r.Next()
 		return
 	}

@@ -14,8 +14,8 @@ const (
 )
 
 var (
-	Port              string // 端口号 外部调用
-	JwtSignKey        string // jwt secret 外部调用
+	Port              string // 端口号
+	JwtSignKey        string // jwt secret
 	JwtExpireTime     int64  // jwt token 过期时间 单位分钟
 	UserName          string
 	Password          string
@@ -61,14 +61,14 @@ func initLogConfig(logLevel string) {
 }
 
 func init() {
-	// 设置缺少值
+	// 设置默认值
 	viper.SetDefault("LOG_LEVEL", "debug")
 	viper.SetDefault("PORT", ":8080")
 	viper.SetDefault("JWT_SIGN_KEY", "sundayhk.com") // jwt secret
 	viper.SetDefault("JWT_EXPIRE_TIME", 120)         // jwt token 过期时间 单位分钟
-	viper.SetDefault("USER_NAME", "sunday")
-	viper.SetDefault("PASSWORD", "sunday01")
-	viper.SetDefault("METADATA_NAMESPACE", "default")
+	viper.SetDefault("USERNAME", "sunday")
+	viper.SetDefault("PASSWORD", "sunday")
+	viper.SetDefault("METADATA_NAMESPACE", "krm")
 
 	// 获取系统环境变量
 	viper.AutomaticEnv()
