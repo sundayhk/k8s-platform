@@ -4,7 +4,9 @@ import (
 	_ "k8s-platform/config"
 	"k8s-platform/middlewares"
 	"k8s-platform/routers"
+
 	// "k8s-platform/utils/jwtutil"
+	_ "k8s-platform/controllers/initcontroller"
 	"k8s-platform/utils/logs"
 
 	"github.com/gin-gonic/gin"

@@ -14,11 +14,12 @@ const (
 )
 
 var (
-	Port          string // 端口号 外部调用
-	JwtSignKey    string // jwt secret 外部调用
-	JwtExpireTime int64  // jwt token 过期时间 单位分钟
-	UserName      string
-	Password      string
+	Port              string // 端口号 外部调用
+	JwtSignKey        string // jwt secret 外部调用
+	JwtExpireTime     int64  // jwt token 过期时间 单位分钟
+	UserName          string
+	Password          string
+	MetadataNamespace string
 )
 
 type ReturnData struct {
@@ -67,6 +68,7 @@ func init() {
 	viper.SetDefault("JWT_EXPIRE_TIME", 120)         // jwt token 过期时间 单位分钟
 	viper.SetDefault("USER_NAME", "sunday")
 	viper.SetDefault("PASSWORD", "sunday01")
+	viper.SetDefault("METADATA_NAMESPACE", "default")
 
 	// 获取系统环境变量
 	viper.AutomaticEnv()
@@ -79,5 +81,6 @@ func init() {
 	JwtExpireTime = viper.GetInt64("JWT_EXPIRE_TIME")
 	UserName = viper.GetString("USERNAME")
 	Password = viper.GetString("PASSWORD")
+	MetadataNamespace = viper.GetString("METADATA_NAMESPACE")
 	logs.Debug(map[string]interface{}{"用户名": UserName, "密码": Password}, "获取用户密码配置")
 }
