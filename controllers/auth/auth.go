@@ -15,9 +15,10 @@ type UserInfo struct {
 
 // 登陆控制器
 func Login(r *gin.Context) {
+	// 获取前端传递的用户名和密码
 	UserInfo := UserInfo{}
 	returnData := config.NewReturnData()
-	if err := r.ShouldBindBodyWithJSON(&UserInfo); err != nil {
+	if err := r.ShouldBindJSON(&UserInfo); err != nil {
 		returnData.Status = 401
 		returnData.Message = err.Error()
 		r.JSON(200, returnData)

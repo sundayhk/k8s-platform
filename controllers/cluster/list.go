@@ -7,9 +7,9 @@ import (
 )
 
 func List(r *gin.Context) {
-	logs.Debug(nil, "显示集群信息")
+	logs.Debug(nil, "获取集群详情")
 
 	r.JSON(200, gin.H{
-		"message": "显示集群信息",
+		"message": "获取集群详情",
 	})
 }

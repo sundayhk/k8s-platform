@@ -7,19 +7,26 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"k8s.io/client-go/kubernetes"
 )
 
 const (
-	TimeFormat string = "2006-01-02 15:04:05"
+	TimeFormat                    string = "2006-01-02 15:04:05"
+	ClusterConfigSecretLabelKey   string = "sundayhk.com/cluster.metadata"
+	ClusterConfigSecretLabelValue string = "true"
 )
 
+// 全局变量
 var (
-	Port              string // 端口号
-	JwtSignKey        string // jwt secret
-	JwtExpireTime     int64  // jwt token 过期时间 单位分钟
-	UserName          string
-	Password          string
-	MetadataNamespace string
+	Port          string // 端口号
+	JwtSignKey    string // jwt secret
+	JwtExpireTime int64  // jwt token 过期时间 单位分钟
+	UserName      string
+	Password      string
+	// inCluster
+	MetadataNamespace  string                // 名称空间
+	InClusterClientSet *kubernetes.Clientset // 保存clientset类型到InClusterClientSet
+	Clusterkubeconfig  map[string]string     // kubeconfig文件
 )
 
 type ReturnData struct {
@@ -29,19 +36,19 @@ type ReturnData struct {
 }
 
 // 默认值构造函数
-// func NewReturnData() ReturnData {
-// 	ReturnData := ReturnData{}
-// 	ReturnData.Status = 200
-// 	ReturnData.Data = make(map[string]interface{})
-// 	return ReturnData
-// }
-
-func NewReturnData() *ReturnData {
-	return &ReturnData{
-		Status: 200,
-		Data:   make(map[string]interface{}),
-	}
+func NewReturnData() ReturnData {
+	ReturnData := ReturnData{}
+	ReturnData.Status = 200
+	ReturnData.Data = make(map[string]interface{})
+	return ReturnData
 }
+
+// func NewReturnData() *ReturnData {
+// 	return &ReturnData{
+// 		Status: 200,
+// 		Data:   make(map[string]interface{}),
+// 	}
+// }
 
 func initLogConfig(logLevel string) {
 	if logLevel == "debug" {
@@ -71,7 +78,7 @@ func init() {
 	viper.SetDefault("METADATA_NAMESPACE", "krm")
 
 	// 获取系统环境变量
-	viper.AutomaticEnv()
+	// viper.AutomaticEnv()                     // USERNAME冲突
 	logLevel := viper.GetString("LOG_LEVEL") // 从环境变量中获取 LOG_LEVEL
 	initLogConfig(logLevel)
 	logs.Debug(nil, "加载默认配置")

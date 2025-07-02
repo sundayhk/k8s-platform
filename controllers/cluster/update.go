@@ -9,7 +9,5 @@ import (
 func Update(r *gin.Context) {
 	logs.Debug(nil, "更新集群信息")
 
-	r.JSON(200, gin.H{
-		"message": "更新集群信息",
-	})
+	addOrUpdate(r, "Update")
 }

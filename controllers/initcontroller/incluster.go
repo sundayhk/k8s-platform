@@ -28,6 +28,8 @@ func metadataInit() {
 		panic(err.Error())
 	}
 
+	// 将clientSet赋值给全局变量config.InClusterClientSet，可以让项目里的其他包和函数共享该实例，避免重复创建
+	config.InClusterClientSet = clientSet
 	inClusterVersion, _ := clientSet.Discovery().ServerVersion()
 	// 检查config定义名称空间是否存在
 	_, err = clientSet.CoreV1().Namespaces().Get(context.TODO(), config.MetadataNamespace, metav1.GetOptions{})
@@ -42,5 +44,17 @@ func metadataInit() {
 		}
 	} else {
 		logs.Info(map[string]interface{}{"Namespace": config.MetadataNamespace, "incluster版本": inClusterVersion.String()}, "config定义名称空间创建成功")
+	}
+	// 初始化集群kubeconfig
+	config.Clusterkubeconfig = make(map[string]string)
+	// 从secret查询已存在集群
+	listOptions := metav1.ListOptions{
+		LabelSelector: config.ClusterConfigSecretLabelKey + "=" + config.ClusterConfigSecretLabelValue,
+	}
+	secretList, _ := config.InClusterClientSet.CoreV1().Secrets(config.MetadataNamespace).List(context.TODO(), listOptions)
+	for _, secret := range secretList.Items {
+		clusterId := secret.Name
+		kubeconfig := secret.Data["kubeconfig"]
+		config.Clusterkubeconfig[clusterId] = string(kubeconfig)
 	}
 }
