@@ -47,8 +47,8 @@ func addOrUpdate(r *gin.Context, method string) {
 	// 添加注释，保存集群的配置信息
 	// clusterConfigSecret.Annotations = make(map[string]string)
 	// clusterConfigSecret.Annotations["displayName"] = clusterConfig.DisplayName
-	// clusterConfigSecret.Annotations["region"] = clusterConfig.Region
-	// clusterConfigSecret.Annotations["az"] = clusterConfig.AZ
+	// clusterConfigSecret.Annotations["city"] = clusterConfig.City
+	// clusterConfigSecret.Annotations["district"] = clusterConfig.District
 	m := utils.StructToMap(clusterStatus) // 结构体转map
 	clusterConfigSecret.Annotations = m
 	// 保存kubeconfig
@@ -59,7 +59,6 @@ func addOrUpdate(r *gin.Context, method string) {
 	// 在 initcontroller/incluster.go 文件的 metadataInit 函数里，会对 InClusterClientSet 进行初始化
 	if method == "Create" {
 		_, err = config.InClusterClientSet.CoreV1().Secrets(config.MetadataNamespace).Create(context.TODO(), &clusterConfigSecret, metav1.CreateOptions{})
-		return
 	} else {
 		_, err = config.InClusterClientSet.CoreV1().Secrets(config.MetadataNamespace).Update(context.TODO(), &clusterConfigSecret, metav1.UpdateOptions{})
 	}
@@ -71,7 +70,7 @@ func addOrUpdate(r *gin.Context, method string) {
 		r.JSON(200, returnData)
 		return
 	} else {
-		logs.Error(map[string]interface{}{"集群ID": clusterConfig.Id, "集群名称": clusterConfig.DisplayName, "msg": err.Error()}, "集群"+methodText+"成功")
+		logs.Error(map[string]interface{}{"集群ID": clusterConfig.Id, "集群名称": clusterConfig.DisplayName}, "集群"+methodText+"成功")
 		returnData.Status = 200
 		returnData.Message = "集群" + methodText + "成功"
 		r.JSON(200, returnData)
