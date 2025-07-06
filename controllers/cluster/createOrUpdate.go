@@ -12,7 +12,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func addOrUpdate(r *gin.Context, method string) {
+func createOrUpdate(r *gin.Context, method string) {
 	var methodText string
 	if method == "Create" {
 		methodText = "创建"
@@ -70,6 +70,7 @@ func addOrUpdate(r *gin.Context, method string) {
 		r.JSON(200, returnData)
 		return
 	} else {
+		config.Clusterkubeconfig[clusterConfig.Id] = clusterConfig.Kubeconfig // 更新全局变量Clusterkubeconfig
 		logs.Error(map[string]interface{}{"集群ID": clusterConfig.Id, "集群名称": clusterConfig.DisplayName}, "集群"+methodText+"成功")
 		returnData.Status = 200
 		returnData.Message = "集群" + methodText + "成功"

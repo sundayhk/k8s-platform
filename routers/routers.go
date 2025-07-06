@@ -3,6 +3,7 @@ package routers
 import (
 	"k8s-platform/routers/auth"
 	"k8s-platform/routers/cluster"
+	"k8s-platform/routers/namespace"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,4 +15,5 @@ func RegisterRouters(r *gin.Engine) {
 	apiGroup := r.Group("/api") // 定义路由分组
 	auth.RegisterSubRouters(apiGroup)
 	cluster.RegisterSubRouters(apiGroup)
+	namespace.RegisterSubRouters(apiGroup)
 }

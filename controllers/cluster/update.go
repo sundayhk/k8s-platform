@@ -8,6 +8,5 @@ import (
 
 func Update(r *gin.Context) {
 	logs.Debug(nil, "更新集群信息")
-
-	addOrUpdate(r, "Update")
+	createOrUpdate(r, "Update")
 }

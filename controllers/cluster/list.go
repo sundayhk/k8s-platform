@@ -10,7 +10,7 @@ import (
 )
 
 func List(r *gin.Context) {
-	logs.Debug(nil, "集群详情")
+	logs.Debug(nil, "查询集群列表")
 	listOptions := metav1.ListOptions{
 		LabelSelector: config.ClusterConfigSecretLabelKey + "=" + config.ClusterConfigSecretLabelValue,
 	}

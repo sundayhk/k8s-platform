@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Add(r *gin.Context) {
+func Create(r *gin.Context) {
 	logs.Debug(nil, "添加集群信息")
-	addOrUpdate(r, "Create")
+	createOrUpdate(r, "Create")
 }

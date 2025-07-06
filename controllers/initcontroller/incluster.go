@@ -12,7 +12,7 @@ import (
 )
 
 func metadataInit() {
-	logs.Debug(nil, "初始化configp定义命名空间")
+	logs.Debug(nil, "初始化Config定义Namespace")
 
 	// 初始化config实例
 	restConfig, err := clientcmd.BuildConfigFromFlags("", "config/meta.kubeconfig")
@@ -45,9 +45,8 @@ func metadataInit() {
 	} else {
 		logs.Info(map[string]interface{}{"Namespace": config.MetadataNamespace, "incluster版本": inClusterVersion.String()}, "config定义名称空间创建成功")
 	}
-	// 初始化集群kubeconfig
+	// 读取所有secret, 存储到全局变量config.Clusterkubeconfig
 	config.Clusterkubeconfig = make(map[string]string)
-	// 从secret查询已存在集群
 	listOptions := metav1.ListOptions{
 		LabelSelector: config.ClusterConfigSecretLabelKey + "=" + config.ClusterConfigSecretLabelValue,
 	}
